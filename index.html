@@ -25,10 +25,17 @@
 
         <div class="form-container" id="form-view">
             <form id="lead-form" novalidate>
-                <div class="input-group">
-                    <label for="firstName">First Name <span class="req-mark">*</span></label>
-                    <input type="text" id="firstName" name="firstName" required placeholder="e.g. John" autocomplete="given-name" aria-describedby="firstName-error">
-                    <div class="field-error" id="firstName-error"></div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="firstName">First Name <span class="req-mark">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="e.g. John" autocomplete="given-name" aria-describedby="firstName-error">
+                        <div class="field-error" id="firstName-error"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="lastName">Last Name <span class="req-mark">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="e.g. Smith" autocomplete="family-name" aria-describedby="lastName-error">
+                        <div class="field-error" id="lastName-error"></div>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label for="email">Email Address <span class="req-mark">*</span></label>

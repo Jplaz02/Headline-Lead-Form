@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const data = {
             firstName: formData.get('firstName').trim(),
+            lastName: formData.get('lastName').trim(),
             email: formData.get('email').trim(),
             phone: formData.get('phone').trim(),
             submittedAt: new Date().toISOString()
@@ -139,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     firstName: data.firstName,
+                    lastName: data.lastName,
                     email: data.email,
                     phone: data.phone
                 })

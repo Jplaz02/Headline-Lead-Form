@@ -19,11 +19,15 @@ export default async function handler(req, res) {
     }
 
     const firstName = String(body.firstName || '').trim();
+    const lastName = String(body.lastName || '').trim();
     const email = String(body.email || '').trim();
     const phone = String(body.phone || '').trim();
 
     if (!firstName || firstName.length > 100) {
         return res.status(400).json({ error: 'First name is required' });
+    }
+    if (!lastName || lastName.length > 100) {
+        return res.status(400).json({ error: 'Last name is required' });
     }
     if (!email || !EMAIL_RE.test(email) || email.length > 200) {
         return res.status(400).json({ error: 'Valid email is required' });
@@ -34,6 +38,7 @@ export default async function handler(req, res) {
 
     const payload = {
         firstName,
+        lastName,
         email,
         phone,
         submittedAt: new Date().toISOString(),
