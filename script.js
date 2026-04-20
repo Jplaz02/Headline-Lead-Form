@@ -81,23 +81,66 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
+    const setGroupError = (groupId, errorId, message) => {
+        const group = document.getElementById(groupId);
+        const errorEl = document.getElementById(errorId);
+        if (message) {
+            group.classList.add('has-error');
+            if (errorEl) errorEl.textContent = message;
+        } else {
+            group.classList.remove('has-error');
+            if (errorEl) errorEl.textContent = '';
+        }
+    };
+
+    const validateInterest = () => {
+        const selected = form.querySelector('input[name="interest"]:checked');
+        if (!selected) {
+            setGroupError('interest-group', 'interest-error', 'Please select one.');
+            return false;
+        }
+        setGroupError('interest-group', 'interest-error', '');
+        return true;
+    };
+
+    const validateSports = () => {
+        const selected = form.querySelectorAll('input[name="sports"]:checked');
+        if (selected.length === 0) {
+            setGroupError('sports-group', 'sports-error', 'Please select at least one.');
+            return false;
+        }
+        setGroupError('sports-group', 'sports-error', '');
+        return true;
+    };
+
     const validateForm = () => {
-        const inputs = form.querySelectorAll('input[required]');
+        const textInputs = form.querySelectorAll('input[required][type="text"], input[required][type="email"], input[required][type="tel"]');
         let firstInvalid = null;
         let allValid = true;
-        inputs.forEach((input) => {
+        textInputs.forEach((input) => {
             const valid = validateField(input);
             if (!valid) {
                 allValid = false;
                 if (!firstInvalid) firstInvalid = input;
             }
         });
-        if (firstInvalid) firstInvalid.focus();
+        if (!validateInterest()) {
+            allValid = false;
+            if (!firstInvalid) firstInvalid = document.getElementById('interest-group');
+        }
+        if (!validateSports()) {
+            allValid = false;
+            if (!firstInvalid) firstInvalid = document.getElementById('sports-group');
+        }
+        if (firstInvalid && typeof firstInvalid.focus === 'function') {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (firstInvalid.tagName === 'INPUT') firstInvalid.focus();
+        }
         return allValid;
     };
 
     // Clear error styling as the user corrects the field.
-    form.querySelectorAll('input[required]').forEach((input) => {
+    form.querySelectorAll('input[required][type="text"], input[required][type="email"], input[required][type="tel"]').forEach((input) => {
         input.addEventListener('input', () => {
             const group = input.closest('.input-group');
             if (group.classList.contains('has-error')) {
@@ -107,6 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('blur', () => {
             if (input.value.trim()) validateField(input);
         });
+    });
+
+    form.querySelectorAll('input[name="interest"]').forEach((el) => {
+        el.addEventListener('change', validateInterest);
+    });
+    form.querySelectorAll('input[name="sports"]').forEach((el) => {
+        el.addEventListener('change', validateSports);
     });
 
     form.addEventListener('submit', async (e) => {
@@ -128,6 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
             lastName: formData.get('lastName').trim(),
             email: formData.get('email').trim(),
             phone: formData.get('phone').trim(),
+            interest: formData.get('interest'),
+            sports: formData.getAll('sports'),
+            referral: (formData.get('referral') || '').trim(),
             submittedAt: new Date().toISOString()
         };
 
@@ -142,7 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     email: data.email,
-                    phone: data.phone
+                    phone: data.phone,
+                    interest: data.interest,
+                    sports: data.sports,
+                    referral: data.referral
                 })
             });
 

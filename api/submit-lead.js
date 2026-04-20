@@ -1,5 +1,7 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+]?[\d\s\-().]{7,}$/;
+const ALLOWED_INTERESTS = ['Breaks', 'Singles', 'Both'];
+const ALLOWED_SPORTS = ['Football', 'Basketball', 'Baseball', 'Hockey', 'Other'];
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -22,6 +24,12 @@ export default async function handler(req, res) {
     const lastName = String(body.lastName || '').trim();
     const email = String(body.email || '').trim();
     const phone = String(body.phone || '').trim();
+    const interest = String(body.interest || '').trim();
+    const sportsRaw = Array.isArray(body.sports) ? body.sports : [];
+    const sports = sportsRaw
+        .map((s) => String(s).trim())
+        .filter((s) => ALLOWED_SPORTS.includes(s));
+    const referral = String(body.referral || '').trim().slice(0, 200);
 
     if (!firstName || firstName.length > 100) {
         return res.status(400).json({ error: 'First name is required' });
@@ -35,12 +43,22 @@ export default async function handler(req, res) {
     if (!phone || !PHONE_RE.test(phone) || phone.length > 40) {
         return res.status(400).json({ error: 'Valid phone number is required' });
     }
+    if (!ALLOWED_INTERESTS.includes(interest)) {
+        return res.status(400).json({ error: 'Please select an interest' });
+    }
+    if (sports.length === 0) {
+        return res.status(400).json({ error: 'Please select at least one sport' });
+    }
 
     const payload = {
         firstName,
         lastName,
         email,
         phone,
+        interest,
+        sports,
+        sportsList: sports.join(', '),
+        referral: referral || null,
         submittedAt: new Date().toISOString(),
         userAgent: req.headers['user-agent'] || null,
         ip:
