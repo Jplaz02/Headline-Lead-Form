@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formMessage.classList.remove('show', 'success', 'error');
 
         if (!validateForm()) {
-            formMessage.textContent = 'Please fix the highlighted fields and try again.';
+            formMessage.textContent = 'Please complete the highlighted fields before submitting.';
             formMessage.className = 'error show';
             return;
         }
