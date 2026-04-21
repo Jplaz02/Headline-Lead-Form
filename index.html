@@ -50,132 +50,148 @@
 
       <div class="form-container" id="form-view">
         <form id="lead-form" novalidate>
-          <div class="input-row">
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-num">01</span>
+              <span class="form-section-label">Your Details</span>
+            </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label for="firstName"
+                  >First Name <span class="req-mark">*</span></label
+                >
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  required
+                  placeholder="John"
+                  autocomplete="given-name"
+                  aria-describedby="firstName-error"
+                />
+                <div class="field-error" id="firstName-error"></div>
+              </div>
+              <div class="input-group">
+                <label for="lastName"
+                  >Last Name <span class="req-mark">*</span></label
+                >
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  required
+                  placeholder="Smith"
+                  autocomplete="family-name"
+                  aria-describedby="lastName-error"
+                />
+                <div class="field-error" id="lastName-error"></div>
+              </div>
+            </div>
             <div class="input-group">
-              <label for="firstName"
-                >First Name <span class="req-mark">*</span></label
+              <label for="email"
+                >Email Address <span class="req-mark">*</span></label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="you@example.com"
+                autocomplete="email"
+                aria-describedby="email-error"
+              />
+              <div class="field-error" id="email-error"></div>
+            </div>
+            <div class="input-group">
+              <label for="phone"
+                >Phone Number <span class="req-mark">*</span></label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+                autocomplete="tel"
+                aria-describedby="phone-error"
+              />
+              <div class="field-error" id="phone-error"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-num">02</span>
+              <span class="form-section-label">What You Collect</span>
+            </div>
+            <div class="input-group" id="interest-group">
+              <label>Interest <span class="req-mark">*</span></label>
+              <div class="chip-group" role="radiogroup" aria-describedby="interest-error">
+                <label class="chip">
+                  <input type="radio" name="interest" value="Breaks" required />
+                  <span>Breaks</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="interest" value="Singles" required />
+                  <span>Singles</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="interest" value="Both" required />
+                  <span>Both</span>
+                </label>
+              </div>
+              <div class="field-error" id="interest-error"></div>
+            </div>
+
+            <div class="input-group" id="sports-group">
+              <label
+                >Sports <span class="req-mark">*</span>
+                <span class="label-hint">(select all that apply)</span></label
+              >
+              <div class="chip-group" role="group" aria-describedby="sports-error">
+                <label class="chip">
+                  <input type="checkbox" name="sports" value="Football" />
+                  <span>Football</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="sports" value="Basketball" />
+                  <span>Basketball</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="sports" value="Baseball" />
+                  <span>Baseball</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="sports" value="Hockey" />
+                  <span>Hockey</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="sports" value="Other" />
+                  <span>Other</span>
+                </label>
+              </div>
+              <div class="field-error" id="sports-error"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-num">03</span>
+              <span class="form-section-label">Find Us</span>
+            </div>
+            <div class="input-group">
+              <label for="referral"
+                >How did you hear about us?
+                <span class="optional-mark">(optional)</span></label
               >
               <input
                 type="text"
-                id="firstName"
-                name="firstName"
-                required
-                placeholder="e.g. John"
-                autocomplete="given-name"
-                aria-describedby="firstName-error"
+                id="referral"
+                name="referral"
+                placeholder="Instagram, a friend, at the booth…"
+                maxlength="200"
               />
-              <div class="field-error" id="firstName-error"></div>
-            </div>
-            <div class="input-group">
-              <label for="lastName"
-                >Last Name <span class="req-mark">*</span></label
-              >
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                placeholder="e.g. Smith"
-                autocomplete="family-name"
-                aria-describedby="lastName-error"
-              />
-              <div class="field-error" id="lastName-error"></div>
             </div>
           </div>
-          <div class="input-group">
-            <label for="email"
-              >Email Address <span class="req-mark">*</span></label
-            >
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              placeholder="e.g. john@example.com"
-              autocomplete="email"
-              aria-describedby="email-error"
-            />
-            <div class="field-error" id="email-error"></div>
-          </div>
-          <div class="input-group">
-            <label for="phone"
-              >Phone Number <span class="req-mark">*</span></label
-            >
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              autocomplete="tel"
-              aria-describedby="phone-error"
-            />
-            <div class="field-error" id="phone-error"></div>
-          </div>
-
-          <div class="input-group" id="interest-group">
-            <label>Interest <span class="req-mark">*</span></label>
-            <div class="chip-group" role="radiogroup" aria-describedby="interest-error">
-              <label class="chip">
-                <input type="radio" name="interest" value="Breaks" required />
-                <span>Breaks</span>
-              </label>
-              <label class="chip">
-                <input type="radio" name="interest" value="Singles" required />
-                <span>Singles</span>
-              </label>
-              <label class="chip">
-                <input type="radio" name="interest" value="Both" required />
-                <span>Both</span>
-              </label>
-            </div>
-            <div class="field-error" id="interest-error"></div>
-          </div>
-
-          <div class="input-group" id="sports-group">
-            <label
-              >Sports <span class="req-mark">*</span>
-              <span class="label-hint">(select all that apply)</span></label
-            >
-            <div class="chip-group" role="group" aria-describedby="sports-error">
-              <label class="chip">
-                <input type="checkbox" name="sports" value="Football" />
-                <span>Football</span>
-              </label>
-              <label class="chip">
-                <input type="checkbox" name="sports" value="Basketball" />
-                <span>Basketball</span>
-              </label>
-              <label class="chip">
-                <input type="checkbox" name="sports" value="Baseball" />
-                <span>Baseball</span>
-              </label>
-              <label class="chip">
-                <input type="checkbox" name="sports" value="Hockey" />
-                <span>Hockey</span>
-              </label>
-              <label class="chip">
-                <input type="checkbox" name="sports" value="Other" />
-                <span>Other</span>
-              </label>
-            </div>
-            <div class="field-error" id="sports-error"></div>
-          </div>
-
-          <div class="input-group">
-            <label for="referral"
-              >How did you hear about us?
-              <span class="optional-mark">(optional)</span></label
-            >
-            <input
-              type="text"
-              id="referral"
-              name="referral"
-              placeholder="e.g. Instagram, a friend, at the booth"
-              maxlength="200"
-            />
-          </div>
-
-          <hr class="separator" />
 
           <button type="submit" id="submit-btn" class="submit-btn">
             <span class="btn-text">Submit Details</span>
