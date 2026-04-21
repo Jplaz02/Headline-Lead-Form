@@ -11,6 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'headline_lead_submitted';
     const SUBMIT_ENDPOINT = '/api/submit-lead';
 
+    // --- Phone input (intl-tel-input) ---
+    const phoneInput = document.getElementById('phone');
+    let iti = null;
+    if (phoneInput && window.intlTelInput) {
+        iti = window.intlTelInput(phoneInput, {
+            initialCountry: 'auto',
+            geoIpLookup: (success, failure) => {
+                fetch('https://ipapi.co/json')
+                    .then((r) => r.json())
+                    .then((data) => success(data.country_code || 'us'))
+                    .catch(() => failure());
+            },
+            preferredCountries: ['ph', 'us', 'ca'],
+            separateDialCode: true,
+            utilsScript:
+                'https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js',
+        });
+    }
+
     const escapeHtml = (str) => String(str).replace(/[&<>"']/g, (c) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
@@ -73,9 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
             setFieldError(input, 'Please enter a valid email address.');
             return false;
         }
-        if (input.type === 'tel' && !PHONE_RE.test(value)) {
-            setFieldError(input, 'Please enter a valid phone number.');
-            return false;
+        if (input.type === 'tel') {
+            if (iti && typeof iti.isValidNumber === 'function') {
+                if (!iti.isValidNumber()) {
+                    setFieldError(input, 'Please enter a valid phone number for the selected country.');
+                    return false;
+                }
+            } else if (!PHONE_RE.test(value)) {
+                setFieldError(input, 'Please enter a valid phone number.');
+                return false;
+            }
         }
         setFieldError(input, '');
         return true;
@@ -173,11 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
+        const phoneE164 = iti && typeof iti.getNumber === 'function' ? iti.getNumber() : formData.get('phone').trim();
+        const phoneCountry = iti && typeof iti.getSelectedCountryData === 'function' ? iti.getSelectedCountryData() : null;
         const data = {
             firstName: formData.get('firstName').trim(),
             lastName: formData.get('lastName').trim(),
             email: formData.get('email').trim(),
-            phone: formData.get('phone').trim(),
+            phone: phoneE164,
+            phoneCountry: phoneCountry ? (phoneCountry.iso2 || '').toUpperCase() : null,
+            phoneDialCode: phoneCountry ? `+${phoneCountry.dialCode}` : null,
             interest: formData.get('interest'),
             sports: formData.getAll('sports'),
             referral: (formData.get('referral') || '').trim(),
@@ -196,6 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     lastName: data.lastName,
                     email: data.email,
                     phone: data.phone,
+                    phoneCountry: data.phoneCountry,
+                    phoneDialCode: data.phoneDialCode,
                     interest: data.interest,
                     sports: data.sports,
                     referral: data.referral

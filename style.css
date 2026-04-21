@@ -371,6 +371,77 @@ body {
     animation: shake 0.35s ease;
 }
 
+/* --- intl-tel-input dark theme overrides --- */
+.iti {
+    width: 100%;
+    --iti-border-color: var(--border-color);
+    --iti-dialcode-color: var(--text-soft);
+    --iti-arrow-color: var(--text-muted);
+}
+
+.iti__tel-input,
+.iti input[type="tel"],
+.iti input[type="text"] {
+    width: 100%;
+}
+
+.iti__country-list {
+    background: #0a0a0b;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.iti__country {
+    padding: 8px 10px;
+    color: var(--text-soft);
+}
+
+.iti__country.iti__highlight {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--text-main);
+}
+
+.iti__divider {
+    border-bottom: 1px dashed #2a2a2c;
+}
+
+.iti__dial-code {
+    color: var(--text-muted);
+}
+
+.iti__selected-flag {
+    background: transparent !important;
+    border-right: 1px solid var(--border-color);
+}
+
+.iti__selected-flag:hover,
+.iti__selected-flag:focus {
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.iti--separate-dial-code .iti__selected-dial-code {
+    color: var(--text-soft);
+    font-weight: 500;
+}
+
+.iti__search-input {
+    background: var(--bg-input) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 8px 10px !important;
+    margin: 8px !important;
+    width: calc(100% - 16px) !important;
+}
+
+.iti__search-input::placeholder {
+    color: var(--text-dim);
+}
+
 .separator {
     border: 0;
     border-top: 1px dashed #2a2a2c;
