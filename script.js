@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (headerTitle) {
             headerTitle.innerHTML = record && record.firstName
-                ? `Thanks, <span class="text-amber">${escapeHtml(record.firstName)}</span>`
-                : `You're all <span class="text-amber">set</span>`;
+                ? `Thanks, <span class="text-gold">${escapeHtml(record.firstName)}</span>`
+                : `You're all <span class="text-gold">set</span>`;
         }
         if (headerSub) {
             headerSub.textContent = 'Your entry has been locked in for the card-show giveaway.';

@@ -1,7 +1,9 @@
 :root {
-    --brand-amber: #f59e0b;
-    --brand-amber-hover: #fbbf24;
-    --brand-amber-deep: #b45309;
+    /* Headline brand gold — refined metallic, not amber/orange */
+    --brand-gold: #D4AF37;
+    --brand-gold-light: #F2D675;
+    --brand-gold-deep: #8B6914;
+    --brand-gold-muted: #A8842C;
 
     --bg-page: #050505;
     --bg-card: #0f0f10;
@@ -16,7 +18,7 @@
 
     --border-color: #1f1f21;
     --border-hover: #2e2e31;
-    --focus-ring: rgba(245, 158, 11, 0.35);
+    --focus-ring: rgba(212, 175, 55, 0.35);
 }
 
 * {
@@ -49,8 +51,8 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245, 158, 11, 0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 175, 55, 0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(212, 175, 55, 0.06) 0%, transparent 60%);
     z-index: 0;
 }
 
@@ -99,7 +101,7 @@ body {
     width: auto;
     max-width: 220px;
     object-fit: contain;
-    filter: drop-shadow(0 6px 20px rgba(245, 158, 11, 0.15));
+    filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.18));
     transition: transform 0.3s ease;
 }
 
@@ -111,14 +113,14 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(245, 158, 11, 0.06);
-    border: 1px solid rgba(245, 158, 11, 0.25);
-    color: var(--brand-amber);
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    color: var(--brand-gold);
     padding: 5px 14px;
     border-radius: 999px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 1.25rem;
     backdrop-filter: blur(4px);
@@ -127,9 +129,9 @@ body {
 .badge .dot {
     width: 6px;
     height: 6px;
-    background-color: var(--brand-amber);
+    background-color: var(--brand-gold);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--brand-amber);
+    box-shadow: 0 0 8px var(--brand-gold);
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -156,13 +158,28 @@ body {
     margin: 0 auto;
 }
 
-.text-amber {
-    color: var(--brand-amber);
+/* Shining gold headline accent */
+.text-gold {
     font-weight: 600;
-    background: linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-hover) 100%);
+    background: linear-gradient(
+        135deg,
+        var(--brand-gold-deep) 0%,
+        var(--brand-gold) 30%,
+        var(--brand-gold-light) 50%,
+        var(--brand-gold) 70%,
+        var(--brand-gold-deep) 100%
+    );
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent;
+    animation: goldShine 6s ease-in-out infinite;
+}
+
+@keyframes goldShine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .form-container {
@@ -183,7 +200,7 @@ body {
     inset: 0;
     border-radius: 20px;
     padding: 1px;
-    background: linear-gradient(180deg, rgba(245,158,11,0.25) 0%, transparent 40%);
+    background: linear-gradient(180deg, rgba(212,175,55,0.28) 0%, transparent 45%);
     -webkit-mask:
         linear-gradient(#000 0 0) content-box,
         linear-gradient(#000 0 0);
@@ -224,7 +241,7 @@ body {
     margin-bottom: 0.5rem;
     color: #a3a3a3;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
 }
 
 .input-group input {
@@ -248,13 +265,13 @@ body {
 }
 
 .input-group input:focus {
-    border-color: var(--brand-amber);
+    border-color: var(--brand-gold);
     box-shadow: 0 0 0 3px var(--focus-ring);
     background: #0a0a0b;
 }
 
 .req-mark {
-    color: var(--brand-amber);
+    color: var(--brand-gold);
     margin-left: 2px;
     font-weight: 700;
 }
@@ -351,15 +368,23 @@ body {
 }
 
 .chip:has(input:checked) {
-    background: linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-deep) 100%);
-    border-color: var(--brand-amber);
+    background: linear-gradient(
+        135deg,
+        var(--brand-gold-deep) 0%,
+        var(--brand-gold) 50%,
+        var(--brand-gold-light) 75%,
+        var(--brand-gold) 100%
+    );
+    border-color: var(--brand-gold);
     color: #1a1a1c;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+    box-shadow:
+        0 4px 14px rgba(212, 175, 55, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
 }
 
 .chip:has(input:focus-visible) {
-    outline: 2px solid var(--brand-amber);
+    outline: 2px solid var(--brand-gold);
     outline-offset: 2px;
 }
 
@@ -401,7 +426,7 @@ body {
 }
 
 .iti__country.iti__highlight {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(212, 175, 55, 0.14);
     color: var(--text-main);
 }
 
@@ -448,47 +473,74 @@ body {
     margin: 2rem 0 1.5rem;
 }
 
+/* Metallic gold submit button — ambient shimmer + hover sweep */
 .submit-btn {
     width: 100%;
     padding: 1.1rem;
-    background: linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-deep) 100%);
+    background: linear-gradient(
+        120deg,
+        var(--brand-gold-deep) 0%,
+        var(--brand-gold) 30%,
+        var(--brand-gold-light) 50%,
+        var(--brand-gold) 70%,
+        var(--brand-gold-deep) 100%
+    );
+    background-size: 220% 100%;
+    background-position: 0% 50%;
     color: #1a1a1c;
     border: none;
     border-radius: 12px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.6s ease;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
     position: relative;
     overflow: hidden;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     box-shadow:
-        0 8px 20px rgba(245, 158, 11, 0.25),
-        0 1px 0 rgba(255,255,255,0.2) inset;
+        0 8px 24px rgba(212, 175, 55, 0.3),
+        0 1px 0 rgba(255,255,255,0.25) inset;
+    animation: btnShine 5s ease-in-out infinite;
 }
 
-.submit-btn::after {
+@keyframes btnShine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Sweeping highlight on hover */
+.submit-btn::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        100deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        transparent 100%
+    );
+    transform: skewX(-20deg);
+    transition: left 0.75s ease;
+    pointer-events: none;
 }
 
 .submit-btn:hover {
     transform: translateY(-2px);
     box-shadow:
-        0 12px 30px rgba(245, 158, 11, 0.4),
-        0 1px 0 rgba(255,255,255,0.25) inset;
+        0 14px 36px rgba(212, 175, 55, 0.45),
+        0 1px 0 rgba(255,255,255,0.3) inset;
 }
 
-.submit-btn:hover::after {
-    opacity: 1;
+.submit-btn:hover::before {
+    left: 125%;
 }
 
 .submit-btn:hover .btn-arrow {
@@ -501,6 +553,13 @@ body {
 
 .btn-arrow {
     transition: transform 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-text {
+    position: relative;
+    z-index: 1;
 }
 
 .submit-btn.loading .btn-text,
@@ -526,6 +585,7 @@ body {
     border-radius: 50%;
     border-top-color: #1a1a1c;
     animation: spin 0.8s linear infinite;
+    z-index: 2;
 }
 
 @keyframes spin {
@@ -574,6 +634,25 @@ body {
         0 1px 0 rgba(255,255,255,0.04) inset;
     text-align: center;
     animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    position: relative;
+}
+
+.success-view::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(212,175,55,0.35) 0%, transparent 45%);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
 @keyframes popIn {
@@ -586,14 +665,20 @@ body {
     height: 84px;
     margin: 0 auto 1.5rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-deep) 100%);
+    background: linear-gradient(
+        135deg,
+        var(--brand-gold-deep) 0%,
+        var(--brand-gold) 40%,
+        var(--brand-gold-light) 60%,
+        var(--brand-gold) 100%
+    );
     color: #1a1a1c;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow:
-        0 12px 30px rgba(245, 158, 11, 0.35),
-        0 0 0 8px rgba(245, 158, 11, 0.08);
+        0 12px 30px rgba(212, 175, 55, 0.4),
+        0 0 0 8px rgba(212, 175, 55, 0.08);
     animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
 }
 
