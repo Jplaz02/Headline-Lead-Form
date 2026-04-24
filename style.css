@@ -414,26 +414,15 @@ body {
     width: 100%;
 }
 
-/* Dropdown container */
-.iti__dropdown-content,
-.iti__country-container {
-    background: #0a0a0b !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 10px !important;
-    color: var(--text-main);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-}
-
+/* Country list popup */
 .iti__country-list {
     background: #0a0a0b;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     color: var(--text-main);
-    max-height: 240px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    max-height: 260px;
     overflow-y: auto;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 4px 0;
 }
 
 .iti__country {
@@ -442,20 +431,13 @@ body {
     background: transparent;
 }
 
-.iti__country.iti__highlight,
-.iti__country:hover {
-    background: var(--brand-gold-tint) !important;
-    color: var(--text-main) !important;
-}
-
-.iti__country-name {
-    color: inherit;
+.iti__country.iti__highlight {
+    background: var(--brand-gold-tint);
+    color: var(--text-main);
 }
 
 .iti__divider {
     border-bottom: 1px dashed #2a2a2c;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
 }
 
 .iti__dial-code {
@@ -477,43 +459,32 @@ body {
     font-weight: 500;
 }
 
-/* Search input + its wrapper — v23 uses a wrapper div with its own bg */
-.iti__search-input-wrapper,
-.iti__dropdown-content > div:first-child:has(.iti__search-input) {
-    background: #0a0a0b !important;
-    padding: 8px !important;
-    border-bottom: 1px solid var(--border-color);
-}
-
+/* Search input — darken the bright white input that ships by default */
 .iti__search-input {
-    background: var(--bg-input) !important;
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
-    padding: 9px 12px !important;
-    margin: 0 !important;
-    width: 100% !important;
-    font-size: 0.9rem !important;
-    outline: none !important;
-    font-family: inherit !important;
-    box-shadow: none !important;
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin: 8px;
+    width: calc(100% - 16px);
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
 }
 
 .iti__search-input:focus {
-    border-color: var(--brand-gold) !important;
-    box-shadow: 0 0 0 2px var(--focus-ring) !important;
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
 .iti__search-input::placeholder {
-    color: var(--text-dim) !important;
-    opacity: 1;
+    color: var(--text-dim);
 }
 
-/* Some v23 builds use a "no-country-result" text that can carry default color */
 .iti__no-country-result {
-    color: var(--text-muted) !important;
-    background: transparent !important;
-    padding: 9px 12px !important;
+    color: var(--text-muted);
+    padding: 9px 12px;
 }
 
 /* ───── Submit button — static metallic gold ───── */
