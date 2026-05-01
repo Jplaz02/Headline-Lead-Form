@@ -279,7 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const err = await response.json().catch(() => ({}));
-                throw new Error(err.error || 'Submission failed');
+                console.error('Submission error payload:', err);
+                const detail = err.airtableError && (err.airtableError.message || err.airtableError.type)
+                    ? ` (Airtable: ${err.airtableError.message || err.airtableError.type})`
+                    : '';
+                throw new Error(`${err.error || 'Submission failed'}${detail}`);
             }
 
             showSuccessView(data);

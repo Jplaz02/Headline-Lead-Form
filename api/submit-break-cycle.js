@@ -85,7 +85,11 @@ export default async function handler(req, res) {
         if (!showRes.ok) {
             const text = await showRes.text().catch(() => '');
             console.error('Airtable Show create failed', showRes.status, text);
-            return res.status(502).json({ error: 'Could not create show record' });
+            return res.status(502).json({
+                error: 'Could not create show record',
+                airtableStatus: showRes.status,
+                airtableError: parseAirtableError(text),
+            });
         }
 
         const showJson = await showRes.json();
@@ -123,7 +127,11 @@ export default async function handler(req, res) {
                 const text = await breakRes.text().catch(() => '');
                 console.error('Airtable Break batch failed', breakRes.status, text);
                 await rollbackShow(baseId, headers, showRecordId, createdBreakIds);
-                return res.status(502).json({ error: 'Could not create break records' });
+                return res.status(502).json({
+                    error: 'Could not create break records',
+                    airtableStatus: breakRes.status,
+                    airtableError: parseAirtableError(text),
+                });
             }
 
             const breakJson = await breakRes.json();
@@ -165,4 +173,21 @@ async function rollbackShow(baseId, headers, showRecordId, breakIds) {
 
 function safeJson(str) {
     try { return JSON.parse(str); } catch { return null; }
+}
+
+function parseAirtableError(text) {
+    if (!text) return null;
+    try {
+        const json = JSON.parse(text);
+        if (json && json.error) {
+            if (typeof json.error === 'string') return json.error;
+            return {
+                type: json.error.type || null,
+                message: json.error.message || null,
+            };
+        }
+        return json;
+    } catch {
+        return text.slice(0, 500);
+    }
 }
