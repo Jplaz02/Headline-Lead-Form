@@ -772,6 +772,139 @@ input.iti__search-input:focus {
     letter-spacing: 0.02em;
 }
 
+/* ───── Dynamic break list (break-cycle page) ───── */
+.break-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+}
+
+.break-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0.55rem;
+    animation: breakRowIn 0.25s ease both;
+}
+
+@keyframes breakRowIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.break-row .break-input-wrap {
+    flex: 1;
+    position: relative;
+}
+
+.break-row .break-index {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brand-gold);
+    letter-spacing: 0.15em;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    user-select: none;
+}
+
+.break-row input {
+    width: 100%;
+    padding: 1rem 1.15rem 1rem 3.4rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.005em;
+}
+
+.break-row input::placeholder {
+    color: var(--text-dim);
+}
+
+.break-row input:hover {
+    border-color: var(--border-hover);
+}
+
+.break-row input:focus {
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    background: #0a0a0b;
+}
+
+.break-row.has-error input {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.04);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.break-remove-btn {
+    flex-shrink: 0;
+    width: 44px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+}
+
+.break-remove-btn:hover {
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.04);
+}
+
+.break-remove-btn:focus-visible {
+    outline: 2px solid var(--brand-gold);
+    outline-offset: 2px;
+}
+
+.add-break-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.7rem 1.1rem;
+    background: transparent;
+    border: 1px dashed var(--brand-gold-hairline);
+    border-radius: 10px;
+    color: var(--brand-gold);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+}
+
+.add-break-btn:hover {
+    border-color: var(--brand-gold);
+    background: var(--brand-gold-tint);
+    color: var(--brand-gold-light);
+}
+
+.add-break-btn:focus-visible {
+    outline: 2px solid var(--brand-gold);
+    outline-offset: 2px;
+}
+
+.input-group#breaks-group.has-error .field-error {
+    max-height: 2em;
+    opacity: 1;
+    margin-top: 0.45rem;
+}
+
 /* ───── Responsive ───── */
 @media (max-width: 480px) {
     body {
