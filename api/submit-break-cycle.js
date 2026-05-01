@@ -10,7 +10,7 @@ const SHOW_FIELDS = {
 };
 
 const BREAK_FIELDS = {
-    breakNumber: 'Break Name',
+    breakNumber: 'Break Number',
     showLink: 'Show ID',
 };
 
