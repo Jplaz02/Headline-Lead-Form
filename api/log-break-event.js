@@ -3,7 +3,7 @@ const EVENTS_TABLE_ID = 'tbllS5BreaRk7Sawp';
 const EVENT_FIELDS = {
     action: 'Action',
     scannedBy: 'Scanned By',
-    breaks: 'Breaks',
+    recordId: 'Record ID',
 };
 
 const ALLOWED_ACTIONS = [
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
                     fields: {
                         [EVENT_FIELDS.action]: action,
                         [EVENT_FIELDS.scannedBy]: scannedBy,
-                        [EVENT_FIELDS.breaks]: [breakId],
+                        [EVENT_FIELDS.recordId]: breakId,
                     },
                 }),
             }
