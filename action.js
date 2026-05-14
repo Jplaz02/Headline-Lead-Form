@@ -20,8 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const summaryBreakNumber = document.getElementById('summary-break-number');
     const summaryStatus = document.getElementById('summary-status');
-    const summaryShowRow = document.getElementById('summary-show-row');
-    const summaryShowName = document.getElementById('summary-show-name');
+    const summaryBreakerRow = document.getElementById('summary-breaker-row');
+    const summaryBreaker = document.getElementById('summary-breaker');
+    const summaryStudioRow = document.getElementById('summary-studio-row');
+    const summaryStudio = document.getElementById('summary-studio');
 
     const form = document.getElementById('action-form');
     const submitBtn = document.getElementById('submit-btn');
@@ -60,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let breakRecordId = '';
     let breakNumber = '';
-    let showName = '';
     let currentAction = '';
 
     const params = new URLSearchParams(window.location.search);
@@ -82,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             const status = data?.status?.name || data?.status || null;
             breakNumber = data?.breakNumber || '';
-            showName = data?.showName || '';
+            const breaker = data?.breaker || '';
+            const studio = data?.showRoom?.name || data?.showRoom || '';
 
             if (status === 'Shipped') {
                 summaryBreakNumber.textContent = breakNumber || '—';
@@ -99,9 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAction = action;
             summaryBreakNumber.textContent = breakNumber || '—';
             summaryStatus.textContent = status;
-            if (showName) {
-                summaryShowName.textContent = showName;
-                summaryShowRow.hidden = false;
+            if (breaker) {
+                summaryBreaker.textContent = breaker;
+                summaryBreakerRow.hidden = false;
+            }
+            if (studio) {
+                summaryStudio.textContent = studio;
+                summaryStudioRow.hidden = false;
             }
             submitBtnText.textContent = action;
             showOnly(formView);
