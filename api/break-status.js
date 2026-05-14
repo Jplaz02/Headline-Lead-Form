@@ -3,6 +3,7 @@ const BREAK_TABLE_ID = 'tblN6W33J35pLLqvT';
 const BREAK_FIELDS = {
     breakNumber: 'Break Number',
     status: 'Status',
+    showName: 'Show Name',
 };
 
 const RECORD_ID_PATTERN = /^rec[A-Za-z0-9]{14}$/;
@@ -52,10 +53,13 @@ export default async function handler(req, res) {
 
     const json = await airtableRes.json();
     const fields = json.fields || {};
+    const showNameRaw = fields[BREAK_FIELDS.showName];
+    const showName = Array.isArray(showNameRaw) ? showNameRaw[0] || null : showNameRaw || null;
     return res.status(200).json({
         id: json.id,
         status: fields[BREAK_FIELDS.status] || null,
         breakNumber: fields[BREAK_FIELDS.breakNumber] || null,
+        showName,
     });
 }
 
