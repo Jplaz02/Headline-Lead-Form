@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const summaryBreakNumber = document.getElementById('summary-break-number');
     const summaryStatus = document.getElementById('summary-status');
+    const summaryShowRow = document.getElementById('summary-show-row');
+    const summaryShowName = document.getElementById('summary-show-name');
     const summaryBreakerRow = document.getElementById('summary-breaker-row');
     const summaryBreaker = document.getElementById('summary-breaker');
     const summaryStudioRow = document.getElementById('summary-studio-row');
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             const status = data?.status?.name || data?.status || null;
             breakNumber = data?.breakNumber || '';
+            const showName = data?.showName || '';
             const breaker = data?.breaker || '';
             const studio = data?.showRoom?.name || data?.showRoom || '';
 
@@ -101,6 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAction = action;
             summaryBreakNumber.textContent = breakNumber || '—';
             summaryStatus.textContent = status;
+            if (showName) {
+                summaryShowName.textContent = showName;
+                summaryShowRow.hidden = false;
+            }
             if (breaker) {
                 summaryBreaker.textContent = breaker;
                 summaryBreakerRow.hidden = false;

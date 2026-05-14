@@ -5,6 +5,7 @@ const BREAK_FIELDS = {
     status: 'Status',
     breaker: 'Breaker',
     showRoom: 'Show Room',
+    showName: 'Show Name',
 };
 
 const RECORD_ID_PATTERN = /^rec[A-Za-z0-9]{14}$/;
@@ -61,6 +62,7 @@ export default async function handler(req, res) {
         breakNumber: fields[BREAK_FIELDS.breakNumber] || null,
         breaker: firstLookup(fields[BREAK_FIELDS.breaker]),
         showRoom: firstLookup(fields[BREAK_FIELDS.showRoom]),
+        showName: firstLookup(fields[BREAK_FIELDS.showName]),
     });
 }
 
