@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Headline – Break Action</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="any"
+      href="assets/L_Primary_Logo_FC_Gradient_Shadow.png?v=2"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="assets/L_Primary_Logo_FC_Gradient_Shadow.png?v=2"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <div class="page-wrapper">
+      <div class="form-header">
+        <div class="logo-wrap">
+          <img
+            src="assets/logo-dark.png"
+            alt="Headline Consignment"
+            class="logo"
+          />
+        </div>
+        <h1 id="header-title">
+          Break <span class="text-gold">Action</span>
+        </h1>
+        <p id="header-sub">Scan complete. Confirm your name to log the next step.</p>
+      </div>
+
+      <!-- Loading state -->
+      <div class="form-container" id="loading-view">
+        <div class="status-loading">
+          <div class="loader status-loader"></div>
+          <span>Loading break…</span>
+        </div>
+      </div>
+
+      <!-- Action form -->
+      <div class="form-container" id="form-view" hidden>
+        <div class="break-summary" id="break-summary">
+          <div class="break-summary-row">
+            <span class="break-summary-label">Break</span>
+            <span class="break-summary-value" id="summary-break-number">—</span>
+          </div>
+          <div class="break-summary-row">
+            <span class="break-summary-label">Status</span>
+            <span class="break-summary-pill" id="summary-status">—</span>
+          </div>
+        </div>
+
+        <form id="action-form" novalidate>
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-num">01</span>
+              <span class="form-section-label">Confirm Scanner</span>
+            </div>
+            <div class="input-group">
+              <label for="scannedBy"
+                >Your Name <span class="req-mark">*</span></label
+              >
+              <input
+                type="text"
+                id="scannedBy"
+                name="scannedBy"
+                required
+                placeholder="John Smith"
+                maxlength="200"
+                autocomplete="name"
+                aria-describedby="scannedBy-error"
+              />
+              <div class="field-error" id="scannedBy-error"></div>
+            </div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="submit-btn">
+            <span class="btn-text" id="submit-btn-text">Confirm</span>
+            <svg
+              class="btn-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+            <div class="loader"></div>
+          </button>
+          <div id="form-message"></div>
+        </form>
+      </div>
+
+      <!-- Already complete / no action needed -->
+      <div class="form-container info-view" id="info-view" hidden>
+        <div class="info-icon" id="info-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2 class="info-title" id="info-title">This break is already complete.</h2>
+        <p class="info-message" id="info-message"></p>
+      </div>
+
+      <!-- Success view -->
+      <div class="success-view" id="success-view" hidden>
+        <div class="success-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2 class="success-title">Done.</h2>
+        <p class="success-message">
+          <span class="text-gold" id="success-action"></span> logged for
+          break <span class="text-gold" id="success-break-number"></span>
+          by <span id="success-name"></span>.
+        </p>
+        <p class="success-meta">You can close this window.</p>
+      </div>
+
+      <div class="footer-note">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Encrypted &amp; secure submission
+      </div>
+    </div>
+    <script src="action.js"></script>
+  </body>
+</html>
