@@ -10,46 +10,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerSub = document.getElementById('header-sub');
     const breakList = document.getElementById('break-list');
     const addBreakBtn = document.getElementById('add-break-btn');
+    const addPersonalBtn = document.getElementById('add-personal-btn');
     const resetBtn = document.getElementById('reset-btn');
 
     const SUBMIT_ENDPOINT = '/api/submit-break-cycle';
 
-    const escapeHtml = (str) => String(str).replace(/[&<>"']/g, (c) => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
+    // ───── Entry type config ─────
+    const ENTRY_CONFIG = {
+        Break: {
+            rowClass: 'type-break',
+            badge: 'Break',
+            placeholder: 'Break number',
+            maxlength: 50,
+            removeLabel: 'Remove break',
+        },
+        Personal: {
+            rowClass: 'type-personal',
+            badge: 'Personal',
+            placeholder: 'Customer name',
+            maxlength: 100,
+            removeLabel: 'Remove personal',
+        },
+    };
 
-    // ───── Dynamic break rows ─────
-    let breakCounter = 0;
+    // ───── Dynamic entry rows ─────
+    let entryCounter = 0;
 
-    const renumberRows = () => {
+    const updateRemoveButtons = () => {
         const rows = breakList.querySelectorAll('.break-row');
-        rows.forEach((row, idx) => {
-            const indexEl = row.querySelector('.break-index');
-            if (indexEl) indexEl.textContent = String(idx + 1).padStart(2, '0');
+        rows.forEach((row) => {
             const removeBtn = row.querySelector('.break-remove-btn');
             if (removeBtn) removeBtn.style.display = rows.length > 1 ? 'flex' : 'none';
         });
     };
 
-    const addBreakRow = (focus = true) => {
-        breakCounter += 1;
-        const id = `break-${breakCounter}`;
+    const addEntryRow = (type, focus = true) => {
+        const cfg = ENTRY_CONFIG[type];
+        if (!cfg) return;
+        entryCounter += 1;
+        const id = `entry-${entryCounter}`;
         const row = document.createElement('div');
-        row.className = 'break-row';
+        row.className = `break-row ${cfg.rowClass}`;
+        row.dataset.type = type;
         row.innerHTML = `
             <div class="break-input-wrap">
-                <span class="break-index"></span>
+                <span class="break-type-badge">${cfg.badge}</span>
                 <input
                     type="text"
-                    name="breakNumber"
+                    name="entryValue"
                     id="${id}"
-                    placeholder="Break number"
-                    maxlength="50"
+                    placeholder="${cfg.placeholder}"
+                    maxlength="${cfg.maxlength}"
                     autocomplete="off"
                     required
                 />
             </div>
-            <button type="button" class="break-remove-btn" aria-label="Remove break">
+            <button type="button" class="break-remove-btn" aria-label="${cfg.removeLabel}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -70,17 +86,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const rows = breakList.querySelectorAll('.break-row');
             if (rows.length <= 1) return;
             row.remove();
-            renumberRows();
+            updateRemoveButtons();
         });
 
-        renumberRows();
+        updateRemoveButtons();
         if (focus) input.focus();
     };
 
-    addBreakBtn.addEventListener('click', () => addBreakRow(true));
+    addBreakBtn.addEventListener('click', () => addEntryRow('Break', true));
+    addPersonalBtn.addEventListener('click', () => addEntryRow('Personal', true));
 
     // Start with one break row
-    addBreakRow(false);
+    addEntryRow('Break', false);
 
     // ───── Validation helpers ─────
     const setFieldError = (input, message) => {
@@ -132,10 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
-    const validateBreaks = () => {
+    const validateEntries = () => {
         const rows = breakList.querySelectorAll('.break-row');
         if (rows.length === 0) {
-            setGroupError('breaks-group', 'breaks-error', 'Please add at least one break.');
+            setGroupError('breaks-group', 'breaks-error', 'Please add at least one break or personal.');
             return false;
         }
 
@@ -151,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!allValid) {
-            setGroupError('breaks-group', 'breaks-error', 'Fill in every break number, or remove the empty ones.');
+            setGroupError('breaks-group', 'breaks-error', 'Fill in every break number and customer name, or remove the empty rows.');
             return false;
         }
 
@@ -164,8 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let firstInvalid = null;
         let allValid = true;
         textInputs.forEach((input) => {
-            // Skip break inputs — handled by validateBreaks
-            if (input.name === 'breakNumber') return;
+            // Skip entry inputs — handled by validateEntries
+            if (input.name === 'entryValue') return;
             const valid = validateField(input);
             if (!valid) {
                 allValid = false;
@@ -176,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allValid = false;
             if (!firstInvalid) firstInvalid = document.getElementById('showRoom-group');
         }
-        if (!validateBreaks()) {
+        if (!validateEntries()) {
             allValid = false;
             if (!firstInvalid) firstInvalid = document.getElementById('breaks-group');
         }
@@ -203,6 +220,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ───── Submit ─────
+    const summarizeEntries = (entries) => {
+        const breaks = entries.filter((e) => e.type === 'Break').length;
+        const personals = entries.filter((e) => e.type === 'Personal').length;
+        const parts = [];
+        if (breaks) parts.push(`${breaks} break${breaks === 1 ? '' : 's'}`);
+        if (personals) parts.push(`${personals} personal${personals === 1 ? '' : 's'}`);
+        return parts.join(' · ') || '0 entries';
+    };
+
     const showSuccessView = (record) => {
         formView.hidden = true;
         successView.hidden = false;
@@ -212,9 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (headerSub) {
             headerSub.textContent = 'Your show and breaks are in Airtable.';
         }
-        const breakCount = record?.breakNumbers?.length || 0;
         if (successSummary) {
-            successSummary.textContent = `${breakCount} break${breakCount === 1 ? '' : 's'}`;
+            successSummary.textContent = summarizeEntries(record?.entries || []);
         }
         if (successShowName) {
             successShowName.textContent = record?.showName || '';
@@ -232,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         form.reset();
         breakList.innerHTML = '';
-        breakCounter = 0;
-        addBreakRow(false);
+        entryCounter = 0;
+        addEntryRow('Break', false);
         formMessage.classList.remove('show', 'success', 'error');
         submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
@@ -255,16 +280,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
-        const breakNumbers = formData
-            .getAll('breakNumber')
-            .map((v) => String(v).trim())
-            .filter(Boolean);
+        const entries = Array.from(breakList.querySelectorAll('.break-row'))
+            .map((row) => ({
+                type: row.dataset.type,
+                value: row.querySelector('input').value.trim(),
+            }))
+            .filter((entry) => entry.value);
 
         const data = {
             showName: formData.get('showName').trim(),
             breakerName: formData.get('breakerName').trim(),
             showRoom: formData.get('showRoom'),
-            breakNumbers,
+            entries,
         };
 
         submitBtn.classList.add('loading');
