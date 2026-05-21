@@ -66,7 +66,7 @@ export function buildBreakRecords(entries, showRecordId) {
         };
         if (entry.type === 'Break') {
             fields[BREAK_FIELDS.breakNumber] = entry.value;
-        } else {
+        } else if (entry.type === 'Personal') {
             fields[BREAK_FIELDS.customerName] = entry.value;
         }
         return { fields };

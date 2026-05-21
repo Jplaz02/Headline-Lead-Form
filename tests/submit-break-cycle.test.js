@@ -121,8 +121,10 @@ test('buildBreakRecords preserves order and leaves the unused field unset', () =
         ],
         'recX'
     );
+    assert.equal(records[0].fields.Type, 'Break');
     assert.equal(records[0].fields['Break Number'], '1');
     assert.equal(records[0].fields['Customer Name'], undefined);
+    assert.equal(records[1].fields.Type, 'Personal');
     assert.equal(records[1].fields['Customer Name'], 'A');
     assert.equal(records[1].fields['Break Number'], undefined);
 });
