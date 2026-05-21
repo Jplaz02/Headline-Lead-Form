@@ -67,3 +67,22 @@ test('parseEntries allows a break number of exactly 50 characters', () => {
     assert.equal(error, null);
     assert.equal(entries.length, 1);
 });
+
+test('parseEntries allows a customer name of exactly 100 characters', () => {
+    const { entries, error } = parseEntries([{ type: 'Personal', value: 'x'.repeat(100) }]);
+    assert.equal(error, null);
+    assert.equal(entries.length, 1);
+});
+
+test('parseEntries rejects an item with no type key', () => {
+    const { entries, error } = parseEntries([{ value: 'foo' }]);
+    assert.equal(entries, null);
+    assert.match(error, /break or a personal/i);
+});
+
+test('parseEntries caps the result at 100 entries', () => {
+    const raw = Array.from({ length: 101 }, (_, i) => ({ type: 'Break', value: String(i + 1) }));
+    const { entries, error } = parseEntries(raw);
+    assert.equal(error, null);
+    assert.equal(entries.length, 100);
+});
