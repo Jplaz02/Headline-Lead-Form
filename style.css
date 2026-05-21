@@ -7,6 +7,11 @@
     --brand-gold-tint: rgba(212, 175, 55, 0.08);
     --brand-gold-hairline: rgba(212, 175, 55, 0.18);
 
+    --accent-orange: #E8843C;
+    --accent-orange-light: #F2A86B;
+    --accent-orange-tint: rgba(232, 132, 60, 0.09);
+    --accent-orange-hairline: rgba(232, 132, 60, 0.22);
+
     --bg-page: #050505;
     --bg-card: #0c0c0d;
     --bg-card-soft: #101012;
@@ -797,23 +802,37 @@ input.iti__search-input:focus {
     position: relative;
 }
 
-.break-row .break-index {
+.break-row .break-type-badge {
     position: absolute;
-    left: 1rem;
+    left: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.72rem;
+    font-size: 0.58rem;
     font-weight: 700;
-    color: var(--brand-gold);
-    letter-spacing: 0.15em;
-    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
     pointer-events: none;
     user-select: none;
 }
 
+.break-row.type-break .break-type-badge {
+    color: var(--brand-gold);
+    background: var(--brand-gold-tint);
+    border: 1px solid var(--brand-gold-hairline);
+}
+
+.break-row.type-personal .break-type-badge {
+    color: var(--accent-orange);
+    background: var(--accent-orange-tint);
+    border: 1px solid var(--accent-orange-hairline);
+}
+
 .break-row input {
     width: 100%;
-    padding: 1rem 1.15rem 1rem 3.4rem;
+    padding: 1rem 1.15rem 1rem 5.3rem;
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 0.95rem;
@@ -897,6 +916,29 @@ input.iti__search-input:focus {
 .add-break-btn:focus-visible {
     outline: 2px solid var(--brand-gold);
     outline-offset: 2px;
+}
+
+.break-add-actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.85rem;
+}
+
+.add-personal-btn {
+    border-style: dashed;
+    border-color: var(--accent-orange-hairline);
+    color: var(--accent-orange);
+}
+
+.add-personal-btn:hover {
+    border-color: var(--accent-orange);
+    background: var(--accent-orange-tint);
+    color: var(--accent-orange-light);
+}
+
+.add-personal-btn:focus-visible {
+    outline-color: var(--accent-orange);
 }
 
 .input-group#breaks-group.has-error .field-error {

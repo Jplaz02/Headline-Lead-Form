@@ -112,27 +112,50 @@
             </div>
             <div class="input-group" id="breaks-group">
               <label
-                >Break Numbers <span class="req-mark">*</span>
+                >Breaks &amp; Personals <span class="req-mark">*</span>
                 <span class="label-hint">(at least one)</span></label
               >
               <div class="break-list" id="break-list"></div>
-              <button type="button" class="add-break-btn" id="add-break-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+              <div class="break-add-actions">
+                <button type="button" class="add-break-btn" id="add-break-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Add Break</span>
+                </button>
+                <button
+                  type="button"
+                  class="add-break-btn add-personal-btn"
+                  id="add-personal-btn"
                 >
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                <span>Add Break</span>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Add Personal</span>
+                </button>
+              </div>
               <div class="field-error" id="breaks-error"></div>
             </div>
           </div>

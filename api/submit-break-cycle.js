@@ -11,11 +11,67 @@ const SHOW_FIELDS = {
 
 const BREAK_FIELDS = {
     breakNumber: 'Break Number',
+    customerName: 'Customer Name',
+    type: 'Type',
     showLink: 'Show ID',
 };
 
 // Airtable allows up to 10 records per batch create.
 const AIRTABLE_BATCH_SIZE = 10;
+
+// ───── Entry parsing & record building ─────
+const ENTRY_TYPES = ['Break', 'Personal'];
+const MAX_BREAK_VALUE = 50;
+const MAX_PERSONAL_VALUE = 100;
+const MAX_ENTRIES = 100;
+
+export function parseEntries(rawEntries) {
+    if (!Array.isArray(rawEntries)) {
+        return { entries: null, error: 'At least one break or personal is required' };
+    }
+
+    const entries = [];
+    for (const item of rawEntries) {
+        if (!item || typeof item !== 'object') continue;
+        const type = String(item.type || '').trim();
+        const value = String(item.value || '').trim();
+        if (!value) continue;
+        if (!ENTRY_TYPES.includes(type)) {
+            return { entries: null, error: 'Each entry must be a Break or a Personal' };
+        }
+        const maxLength = type === 'Break' ? MAX_BREAK_VALUE : MAX_PERSONAL_VALUE;
+        if (value.length > maxLength) {
+            return {
+                entries: null,
+                error: type === 'Break'
+                    ? 'Break numbers must be 50 characters or fewer'
+                    : 'Customer names must be 100 characters or fewer',
+            };
+        }
+        entries.push({ type, value });
+    }
+
+    if (entries.length === 0) {
+        return { entries: null, error: 'At least one break or personal is required' };
+    }
+
+    return { entries: entries.slice(0, MAX_ENTRIES), error: null };
+}
+
+export function buildBreakRecords(entries, showRecordId) {
+    return entries.map((entry) => {
+        const fields = {
+            [BREAK_FIELDS.type]: entry.type,
+            [BREAK_FIELDS.showLink]: [showRecordId],
+        };
+        if (entry.type === 'Break') {
+            fields[BREAK_FIELDS.breakNumber] = entry.value;
+        } else if (entry.type === 'Personal') {
+            fields[BREAK_FIELDS.customerName] = entry.value;
+        }
+        return { fields };
+    });
+}
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -38,11 +94,7 @@ export default async function handler(req, res) {
     const showName = String(body.showName || '').trim();
     const breakerName = String(body.breakerName || '').trim();
     const showRoom = String(body.showRoom || '').trim();
-    const breakNumbersRaw = Array.isArray(body.breakNumbers) ? body.breakNumbers : [];
-    const breakNumbers = breakNumbersRaw
-        .map((n) => String(n).trim())
-        .filter(Boolean)
-        .slice(0, 100);
+    const { entries, error: entriesError } = parseEntries(body.entries);
 
     if (!showName || showName.length > 200) {
         return res.status(400).json({ error: 'Show Name is required' });
@@ -53,11 +105,8 @@ export default async function handler(req, res) {
     if (!ALLOWED_SHOW_ROOMS.includes(showRoom)) {
         return res.status(400).json({ error: 'Please select a valid Show Room' });
     }
-    if (breakNumbers.length === 0) {
-        return res.status(400).json({ error: 'At least one break is required' });
-    }
-    if (breakNumbers.some((n) => n.length > 50)) {
-        return res.status(400).json({ error: 'Break numbers must be 50 characters or fewer' });
+    if (entriesError) {
+        return res.status(400).json({ error: entriesError });
     }
 
     const headers = {
@@ -103,12 +152,7 @@ export default async function handler(req, res) {
         return res.status(502).json({ error: 'Network error creating show' });
     }
 
-    const breakRecords = breakNumbers.map((num) => ({
-        fields: {
-            [BREAK_FIELDS.breakNumber]: num,
-            [BREAK_FIELDS.showLink]: [showRecordId],
-        },
-    }));
+    const breakRecords = buildBreakRecords(entries, showRecordId);
 
     const createdBreakIds = [];
     try {
