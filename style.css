@@ -926,6 +926,7 @@ input.iti__search-input:focus {
 }
 
 .add-personal-btn {
+    border-style: dashed;
     border-color: var(--accent-orange-hairline);
     color: var(--accent-orange);
 }
