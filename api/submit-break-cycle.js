@@ -94,11 +94,7 @@ export default async function handler(req, res) {
     const showName = String(body.showName || '').trim();
     const breakerName = String(body.breakerName || '').trim();
     const showRoom = String(body.showRoom || '').trim();
-    const breakNumbersRaw = Array.isArray(body.breakNumbers) ? body.breakNumbers : [];
-    const breakNumbers = breakNumbersRaw
-        .map((n) => String(n).trim())
-        .filter(Boolean)
-        .slice(0, 100);
+    const { entries, error: entriesError } = parseEntries(body.entries);
 
     if (!showName || showName.length > 200) {
         return res.status(400).json({ error: 'Show Name is required' });
@@ -109,11 +105,8 @@ export default async function handler(req, res) {
     if (!ALLOWED_SHOW_ROOMS.includes(showRoom)) {
         return res.status(400).json({ error: 'Please select a valid Show Room' });
     }
-    if (breakNumbers.length === 0) {
-        return res.status(400).json({ error: 'At least one break is required' });
-    }
-    if (breakNumbers.some((n) => n.length > 50)) {
-        return res.status(400).json({ error: 'Break numbers must be 50 characters or fewer' });
+    if (entriesError) {
+        return res.status(400).json({ error: entriesError });
     }
 
     const headers = {
@@ -159,12 +152,7 @@ export default async function handler(req, res) {
         return res.status(502).json({ error: 'Network error creating show' });
     }
 
-    const breakRecords = breakNumbers.map((num) => ({
-        fields: {
-            [BREAK_FIELDS.breakNumber]: num,
-            [BREAK_FIELDS.showLink]: [showRecordId],
-        },
-    }));
+    const breakRecords = buildBreakRecords(entries, showRecordId);
 
     const createdBreakIds = [];
     try {
