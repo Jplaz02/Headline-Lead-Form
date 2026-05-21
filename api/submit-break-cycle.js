@@ -17,6 +17,45 @@ const BREAK_FIELDS = {
 // Airtable allows up to 10 records per batch create.
 const AIRTABLE_BATCH_SIZE = 10;
 
+// ───── Entry parsing & record building ─────
+const ENTRY_TYPES = ['Break', 'Personal'];
+const MAX_BREAK_VALUE = 50;
+const MAX_PERSONAL_VALUE = 100;
+const MAX_ENTRIES = 100;
+
+export function parseEntries(rawEntries) {
+    if (!Array.isArray(rawEntries)) {
+        return { entries: null, error: 'At least one break or personal is required' };
+    }
+
+    const entries = [];
+    for (const item of rawEntries) {
+        if (!item || typeof item !== 'object') continue;
+        const type = String(item.type || '').trim();
+        const value = String(item.value || '').trim();
+        if (!value) continue;
+        if (!ENTRY_TYPES.includes(type)) {
+            return { entries: null, error: 'Each entry must be a Break or a Personal' };
+        }
+        const maxLength = type === 'Break' ? MAX_BREAK_VALUE : MAX_PERSONAL_VALUE;
+        if (value.length > maxLength) {
+            return {
+                entries: null,
+                error: type === 'Break'
+                    ? 'Break numbers must be 50 characters or fewer'
+                    : 'Customer names must be 100 characters or fewer',
+            };
+        }
+        entries.push({ type, value });
+    }
+
+    if (entries.length === 0) {
+        return { entries: null, error: 'At least one break or personal is required' };
+    }
+
+    return { entries: entries.slice(0, MAX_ENTRIES), error: null };
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
