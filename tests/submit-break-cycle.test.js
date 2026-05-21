@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { parseEntries } from '../api/submit-break-cycle.js';
+import { parseEntries, buildBreakRecords } from '../api/submit-break-cycle.js';
 
 test('parseEntries accepts a mix of breaks and personals in order', () => {
     const { entries, error } = parseEntries([
@@ -85,4 +85,44 @@ test('parseEntries caps the result at 100 entries', () => {
     const { entries, error } = parseEntries(raw);
     assert.equal(error, null);
     assert.equal(entries.length, 100);
+});
+
+test('buildBreakRecords maps a Break to the Break Number field', () => {
+    const records = buildBreakRecords([{ type: 'Break', value: '12' }], 'recABC');
+    assert.deepEqual(records, [
+        {
+            fields: {
+                Type: 'Break',
+                'Break Number': '12',
+                'Show ID': ['recABC'],
+            },
+        },
+    ]);
+});
+
+test('buildBreakRecords maps a Personal to the Customer Name field', () => {
+    const records = buildBreakRecords([{ type: 'Personal', value: 'Jane Doe' }], 'recABC');
+    assert.deepEqual(records, [
+        {
+            fields: {
+                Type: 'Personal',
+                'Customer Name': 'Jane Doe',
+                'Show ID': ['recABC'],
+            },
+        },
+    ]);
+});
+
+test('buildBreakRecords preserves order and leaves the unused field unset', () => {
+    const records = buildBreakRecords(
+        [
+            { type: 'Break', value: '1' },
+            { type: 'Personal', value: 'A' },
+        ],
+        'recX'
+    );
+    assert.equal(records[0].fields['Break Number'], '1');
+    assert.equal(records[0].fields['Customer Name'], undefined);
+    assert.equal(records[1].fields['Customer Name'], 'A');
+    assert.equal(records[1].fields['Break Number'], undefined);
 });

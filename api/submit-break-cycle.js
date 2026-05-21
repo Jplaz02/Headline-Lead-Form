@@ -11,6 +11,8 @@ const SHOW_FIELDS = {
 
 const BREAK_FIELDS = {
     breakNumber: 'Break Number',
+    customerName: 'Customer Name',
+    type: 'Type',
     showLink: 'Show ID',
 };
 
@@ -54,6 +56,21 @@ export function parseEntries(rawEntries) {
     }
 
     return { entries: entries.slice(0, MAX_ENTRIES), error: null };
+}
+
+export function buildBreakRecords(entries, showRecordId) {
+    return entries.map((entry) => {
+        const fields = {
+            [BREAK_FIELDS.type]: entry.type,
+            [BREAK_FIELDS.showLink]: [showRecordId],
+        };
+        if (entry.type === 'Break') {
+            fields[BREAK_FIELDS.breakNumber] = entry.value;
+        } else {
+            fields[BREAK_FIELDS.customerName] = entry.value;
+        }
+        return { fields };
+    });
 }
 
 export default async function handler(req, res) {
